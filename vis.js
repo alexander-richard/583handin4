@@ -190,57 +190,6 @@ function storeAffected() {
 
 	});
 }
-function createGraph(index) {
-
-	let chart = d3.select("#year");
-	makeInnerArea(chart);
-
-	let data = d3.csv("cyberSecurityBreaches.csv", function (d, i, names) {
-		return {
-			year: +d.year,
-			affected: +d["Individuals_Affected"]
-
-		};
-	}).then(function (data) {
-
-
-		var svg = d3.select("#year").append("svg")
-			.attr("width", totalWidth + margins.left + margins.right)
-			.attr("height", totalHeight + margins.top + margins.bottom)
-			.append("g")
-			.attr("transform", "translate(" + margins.left + "," + margins.top + ")");
-
-
-		// Add X axis --> it is a date format
-		var x = d3.scaleTime()
-			.domain(d3.extent(data, function(d) { return d.year; }))
-			.range([ 0, 1000 ]);
-		svg.append("g")
-			.attr("transform", "translate(0," + 500 + ")")
-			.call(d3.axisBottom(x));
-
-		// Add Y axis
-		var y = d3.scaleLinear()
-			.domain([0, d3.max(data, function(d) { return +d.affected; })])
-			.range([ 500, 0 ]);
-		svg.append("g")
-			.call(d3.axisLeft(y));
-
-		// Add the line
-		svg.append("path")
-			.datum(data)
-			.attr("fill", "none")
-			.attr("stroke", "steelblue")
-			.attr("stroke-width", 1.5)
-			.attr("d", d3.line()
-				.x(function(d) { return x(d.year) })
-				.y(function(d) { return y(d.affected) })
-			)
-
-
-	});
-
-}
 
 function mousehover(index) {
 	var svg = d3.select("#state").append("svg")
@@ -361,7 +310,7 @@ function makeBarGraph(index) {
 	console.log("height" + wt); //460
 
 
-	var svg = d3.select("#area2").append("svg")
+	var svg = d3.select("#minibox").append("svg")
 		.attr("id", "barGraphh")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
