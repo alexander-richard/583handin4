@@ -169,7 +169,7 @@ function hexColor(index) {
 }
 
 function storeAffected() {
-	d3.csv("cyberSecurityBreaches.csv").then(function(data) {
+	d3.csv("newcyberSecurityBreaches.csv").then(function(data) {
 		data.forEach(function(d) {
 			d["Individuals_Affected"] = +d["Individuals_Affected"];
 		});
@@ -219,43 +219,16 @@ function mousehover(index) {
 
 		var minibox = svg.append("svg")
 			.attr("id", "minibox")
-			.attr("x", "1035")
+			.attr("x", "1020")
 			.attr("y", "275")
 			.append("g")
 
 
 		makeBarGraph(index);
 
-
-		//add here
 			minibox.append("rect")
 				.attr("class", "lg")
 				.style('fill', 'white');
-
-
-
-			/*
-			var marginG = {top: 30, right: 20, bottom: 30, left: 50},
-			    widthG = 600 - marginG.left - marginG.right,
-			    heightG = 270 - marginG.top - marginG.bottom;
-
-
-	       var svg = d3.select("#year").append("svg")
-	       	.attr("width", totalWidth + margins.left + margins.right)
-	       	.attr("height", totalHeight + margins.top + margins.bottom)
-	       	.append("g")
-	       	.attr("transform", "translate(" + margins.left + "," + margins.top + ")");
-
-	        svg.append("minibox")
-	        	.attr("id", "yearStat")
-	        	.attr("x", "1035")
-	        	.attr("y", "275")
-	        	.attr("fill", "red")
-	        	.attr("font-family", "arial")
-	        	.attr("font-size", "50px")
-	        	.text(states[index][0]);
-
-	        	*/
 
 }
 
@@ -263,8 +236,7 @@ function clearInfo() {
 	document.getElementById("stateStat").remove();
 	document.getElementById("attackStat").remove();
 	document.getElementById("minibox").remove();
-	document.getElementById("barGraphh").remove();
-
+	//document.getElementById("barGraphh").remove();
 
 }
 
@@ -277,9 +249,6 @@ function makeInnerArea(chart) {
 		.attr("height", innerHeight)
 		.attr("fill", "black");
 }
-function test() {
-	console.log("hi");
-}
 
 function translate(x, y) {
 	return `translate (${x}, ${y})`;
@@ -287,12 +256,8 @@ function translate(x, y) {
 
 
 function makeBarGraph(index) {
-	console.log("STATE:" + states[index][0]);
-
-
-
-
-	var margin = {top: 40, right: 20, bottom: 30, left: 40},
+	//sources used for function: https://bl.ocks.org/d3noob/8952219, https://www.tutorialsteacher.com/d3js/create-bar-chart-using-d3js
+	var margin = {top: 40, right: 20, bottom: 30, left: 60},
 		width = 460 - margin.left - margin.right,
 		height = 300 - margin.top - margin.bottom;
 
@@ -303,26 +268,19 @@ function makeBarGraph(index) {
 	var y = d3.scaleLinear()
 		.range([height, 0]);
 
-	var ht = height + margin.top + margin.bottom
-	var wt = width + margin.left + margin.right
-
-	console.log("width" + ht);  //300
-	console.log("height" + wt); //460
-
 
 	var svg = d3.select("#minibox").append("svg")
 		.attr("id", "barGraphh")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 
-		//.attr("width", width + margin.left + margin.right)
-		//.attr("height", height + margin.top + margin.bottom)
+
 		.append("g")
 		.attr("transform",
 			"translate(" + margin.left + "," + margin.top + ")");
 
 
-	data = d3.csv("cyberSecurityBreaches.csv", function(d, i, names) {
+	data = d3.csv("newcyberSecurityBreaches.csv", function(d, i, names) {
 		return {
 
 			state: d['State'],
@@ -333,7 +291,6 @@ function makeBarGraph(index) {
 	};
 	}).then(function (data){
 
-		// Scale the range of the data in the domains
 		x.domain(data.map(function(d) { return d.year; }));
 		y.domain([0, d3.max(data, function(d) { return d.numAffected; })]);
 
@@ -343,26 +300,21 @@ function makeBarGraph(index) {
 				return d.state === states[index][0]}))
 			.enter().append("rect")
 			.attr("class", "bar")
+			.style('fill', 'rgb(255, 145, 0)')
 			.attr("x", function(d) { return x(d.year); })
 			.attr("width", x.bandwidth())
 			.attr("y", function(d) { return y(d.numAffected); })
 			.attr("height", function(d) { return height - y(d.numAffected); });
 
 
-
-		// add the x Axis
 		svg.append("g")
 			.attr("transform", "translate(0," + height + ")")
+			.attr("class", "axisColourX")
 			.call(d3.axisBottom(x));
 
-		let maxSum = Math.max(...data.map(d => (parseFloat(d.numAffected))));
-
-		let yscale = d3.scaleLinear([0,maxSum], [480, 0])
-			.nice();
-
-		// add the y Axis
 		svg.append("g")
-			.call(d3.axisLeft(yscale));
+			.attr("class", "axisColourY")
+			.call(d3.axisLeft(y));
 
 	});
 
