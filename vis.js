@@ -17,10 +17,12 @@ var ppl_affected = [];
 // data modified from https://github.com/charliesmart/d3-square-tile-map/blob/master/square-tile-map.js
 var states = [["AK", 0, 72],["AL",504,432,],["AR",360,360,],["AZ",144,360],["CA",72,288],["CO",216,288], ["CT",720,216],["DC",648,360],["DE",720,288],["FL",648,504],["GA",576,432],["HI",72,504], ["IA",360,216],["ID",144,144],["IL",432,144],["IN",432,216],["KS",288,360],["KY",432,288], ["LA",360,432],["MA",720,144],["MD",648,288],["ME",792.8,0],["MI",504,144],["MN",360,144], ["MO",360,288],["MS",432,432],["MT",216,144],["NC",504,360],["ND",288,144],["NE",288,288],[ "NH",792.8,72],["NJ",648,216],["NM",216,360],["NV",144,216],["NY",648,144],["OH",504, 216], ["OK",288,432],["OR",72,216],["PA",576,216],["RI",792.8,216],["SC",576,360],["SD",288,216], ["TN",432,360],["TX",288,504],["UT",144,288],["VA",576,288],["VT",720,72],["WA",72,144],["WI",432,72],[ "WV",504,288],["WY",216,216]];
 
+
 function loadvis() {
 	storeAffected();
-	setTimeout(loadMap(), 10000);
+	setTimeout(loadMap(), 100000);
 }
+
 
 // template taken from https://www.visualcinnamon.com/2013/07/self-organizing-maps-creating-hexagonal.html
 async function loadMap() {
@@ -96,25 +98,71 @@ async function loadMap() {
 		.attr("font-size", "25px")
 		.text("Cyber Breaches in the United States of America");
 
+	svg.append("circle")
+		.attr("cx",180)
+		.attr("cy",707)
+		.attr("r", 6)
+		.style("fill", "rgb(150,0,0)")
 
-	var minibox = svg.append("svg")
-		.attr("id", "minibox")
-		.attr("x", "1035")
-		.attr("y", "275")
-		.append("g");
+	svg.append("text")
+		.attr("x", 195)
+		.attr("y", 709)
+		.text("# Affected > 1,000,000")
+		.style("font-size", "20px")
+		.style("font-family", "Arial")
+		.style("fill", "rgb(150,150,150)")
+		.attr("alignment-baseline","middle")
 
-	minibox.append("rect")
-		.attr("class", "lg");
+	svg.append("circle")
+		.attr("cx",430)
+		.attr("cy",707)
+		.attr("r", 6)
+		.style("fill", "rgb(225,145,0)")
 
+	svg.append("text")
+		.attr("x", 445)
+		.attr("y", 709)
+		.text("# Affected > 100,000 ")
+		.style("font-size", "20px")
+		.style("font-family", "Arial")
+		.style("fill", "rgb(150,150,150)")
+		.attr("alignment-baseline","middle")
+
+	svg.append("circle")
+		.attr("cx",662)
+		.attr("cy",707)
+		.attr("r", 6)
+		.style("fill", "rgb(225,225,0)")
+
+	svg.append("text")
+		.attr("x", 677)
+		.attr("y", 709)
+		.text("# Affected > 0")
+		.style("font-size", "20px")
+		.style("font-family", "Arial")
+		.style("fill", "rgb(150,150,150)")
+		.attr("alignment-baseline","middle")
+
+	/*
+        var minibox = svg.append("svg")
+            .attr("id", "minibox")
+            .attr("x", "1035")
+            .attr("y", "275")
+            .append("g");
+
+
+        minibox.append("rect")
+            .attr("class", "lg");
+    */
 }
 
 function hexColor(index) {
 	if (ppl_affected[index] > 1000000) {
 		return("rgb(150,0,0)");
 	} else if (ppl_affected[index] < 100000) {
-		return("rgb(0, 0, 204)");
+		return("rgb(255, 225, 0)");
 	} else if (ppl_affected[index] <= 1000000 && ppl_affected[index] >= 100000) {
-		return("rgb(102, 0, 102)");
+		return("rgb(255, 145, 0)");
 	} else {
 		return("rgb(255, 255, 255)");
 	}
@@ -143,6 +191,7 @@ function storeAffected() {
 	});
 }
 function createGraph(index) {
+
 	let chart = d3.select("#year");
 	makeInnerArea(chart);
 
@@ -150,8 +199,10 @@ function createGraph(index) {
 		return {
 			year: +d.year,
 			affected: +d["Individuals_Affected"]
+
 		};
 	}).then(function (data) {
+
 
 		var svg = d3.select("#year").append("svg")
 			.attr("width", totalWidth + margins.left + margins.right)
@@ -185,6 +236,8 @@ function createGraph(index) {
 				.x(function(d) { return x(d.year) })
 				.y(function(d) { return y(d.affected) })
 			)
+
+
 	});
 
 }
@@ -205,7 +258,7 @@ function mousehover(index) {
 		.attr("font-size", "50px")
 		.text(states[index][0]);
 
-	svg.append("text")
+		svg.append("text")
 		.attr("id", "attackStat")
 		.attr("x", totalWidth - 550)
 		.attr("y", 215)
@@ -214,11 +267,56 @@ function mousehover(index) {
 		.attr("font-size", "20px")
 		.text("Total Number of People Affected: " + ppl_affected[index]);
 
+
+		var minibox = svg.append("svg")
+			.attr("id", "minibox")
+			.attr("x", "1035")
+			.attr("y", "275")
+			.append("g")
+
+
+		makeBarGraph(index);
+
+
+		//add here
+			minibox.append("rect")
+				.attr("class", "lg")
+				.style('fill', 'white');
+
+
+
+			/*
+			var marginG = {top: 30, right: 20, bottom: 30, left: 50},
+			    widthG = 600 - marginG.left - marginG.right,
+			    heightG = 270 - marginG.top - marginG.bottom;
+
+
+	       var svg = d3.select("#year").append("svg")
+	       	.attr("width", totalWidth + margins.left + margins.right)
+	       	.attr("height", totalHeight + margins.top + margins.bottom)
+	       	.append("g")
+	       	.attr("transform", "translate(" + margins.left + "," + margins.top + ")");
+
+	        svg.append("minibox")
+	        	.attr("id", "yearStat")
+	        	.attr("x", "1035")
+	        	.attr("y", "275")
+	        	.attr("fill", "red")
+	        	.attr("font-family", "arial")
+	        	.attr("font-size", "50px")
+	        	.text(states[index][0]);
+
+	        	*/
+
 }
 
 function clearInfo() {
 	document.getElementById("stateStat").remove();
 	document.getElementById("attackStat").remove();
+	document.getElementById("minibox").remove();
+	document.getElementById("barGraphh").remove();
+
+
 }
 
 function makeInnerArea(chart) {
@@ -237,3 +335,88 @@ function test() {
 function translate(x, y) {
 	return `translate (${x}, ${y})`;
 }
+
+
+function makeBarGraph(index) {
+	console.log("STATE:" + states[index][0]);
+
+
+
+
+	var margin = {top: 40, right: 20, bottom: 30, left: 40},
+		width = 460 - margin.left - margin.right,
+		height = 300 - margin.top - margin.bottom;
+
+	var x = d3.scaleBand()
+		.range([0, width])
+		.padding(0.1);
+
+	var y = d3.scaleLinear()
+		.range([height, 0]);
+
+	var ht = height + margin.top + margin.bottom
+	var wt = width + margin.left + margin.right
+
+	console.log("width" + ht);  //300
+	console.log("height" + wt); //460
+
+
+	var svg = d3.select("#area2").append("svg")
+		.attr("id", "barGraphh")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+
+		//.attr("width", width + margin.left + margin.right)
+		//.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+		.attr("transform",
+			"translate(" + margin.left + "," + margin.top + ")");
+
+
+	data = d3.csv("cyberSecurityBreaches.csv", function(d, i, names) {
+		return {
+
+			state: d['State'],
+			year: +d.year,
+			numAffected: +d["Individuals_Affected"],
+
+
+	};
+	}).then(function (data){
+
+		// Scale the range of the data in the domains
+		x.domain(data.map(function(d) { return d.year; }));
+		y.domain([0, d3.max(data, function(d) { return d.numAffected; })]);
+
+		svg.selectAll(".bar")
+
+			.data(data.filter(function(d){									//filter technique found at https://www.d3-graph-gallery.com/graph/basic_datamanipulation.html
+				return d.state === states[index][0]}))
+			.enter().append("rect")
+			.attr("class", "bar")
+			.attr("x", function(d) { return x(d.year); })
+			.attr("width", x.bandwidth())
+			.attr("y", function(d) { return y(d.numAffected); })
+			.attr("height", function(d) { return height - y(d.numAffected); });
+
+
+
+		// add the x Axis
+		svg.append("g")
+			.attr("transform", "translate(0," + height + ")")
+			.call(d3.axisBottom(x));
+
+		let maxSum = Math.max(...data.map(d => (parseFloat(d.numAffected))));
+
+		let yscale = d3.scaleLinear([0,maxSum], [480, 0])
+			.nice();
+
+		// add the y Axis
+		svg.append("g")
+			.call(d3.axisLeft(yscale));
+
+	});
+
+
+}
+
