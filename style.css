@@ -11,30 +11,30 @@ rect.lg {
 }
 
 .axisColourX line{
-	stroke: red;
+	stroke: rgb(150,150,150);
 }
 
 .axisColourX path{
-	stroke: red;
+	stroke: rgb(150,150,150);
 }
 
 .axisColourX text{
-	fill: red;
+	fill: rgb(150,150,150);
 }
 
 .axisColourY line{
-	stroke: red;
+	stroke: rgb(150,150,150);
 }
 
 .axisColourY path{
-	stroke: red;
+	stroke: rgb(150,150,150);
 }
 
 .axisColourY text{
-	fill: red;
+	fill: rgb(150,150,150);
 }
 
 .axisLabelY text{
-	stroke: red;
+	stroke: rgb(150,150,150);
 	font-size: 12px;
 }

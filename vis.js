@@ -19,6 +19,7 @@ var states = [["AK", 0, 72],["AL",504,432,],["AR",360,360,],["AZ",144,360],["CA"
 
 
 function loadvis() {
+	document.getElementById("startBtn").remove();
 	storeAffected();
 	setTimeout(loadMap(), 100000);
 }
@@ -72,28 +73,51 @@ async function loadMap() {
 		.attr("y", 0)
 		.attr("width", 500)
 		.attr("height", 750)
-		.style("fill", "rgb(64,64,64)");
+		.style("fill", "rgb(10,10,10)");
 
 	svg.append("rect")
-		.attr("x", totalWidth - 525)
+		.attr("x", totalWidth - 560)
 		.attr("y", 50)
-		.attr("width", 350)
-		.attr("height", 100)
+		.attr("width", 200)
+		.attr("height", 225)
 		.style("fill", "rgb(32,32,32)");
 
 	svg.append("text")
-		.attr("x", totalWidth - 390)
-		.attr("y", 45)
-		.attr("fill", "black")
+		.attr("x", totalWidth - 510)
+		.attr("y", 100)
+		.attr("fill", "rgb(150,150,150)")
 		.attr("font-family", "arial")
-		.attr("font-size", "30px")
+		.attr("font-size", "40px")
 		.text("State");
+
+	svg.append("rect")
+		.attr("x", totalWidth - 335)
+		.attr("y", 50)
+		.attr("width", 200)
+		.attr("height", 225)
+		.style("fill", "rgb(32,32,32)");
+
+	svg.append("text")
+		.attr("x", totalWidth - 330)
+		.attr("y", 100)
+		.attr("fill", "rgb(150,150,150)")
+		.attr("font-family", "arial")
+		.attr("font-size", "40px")
+		.text("Number of");
+
+	svg.append("text")
+		.attr("x", totalWidth - 310)
+		.attr("y", 140)
+		.attr("fill", "rgb(150,150,150)")
+		.attr("font-family", "arial")
+		.attr("font-size", "40px")
+		.text("Infected");
 
 	svg.append("text")
 		.attr("text-anchor", "end")
 		.attr("x", 575)
 		.attr("y", 50)
-		.attr("fill", "white")
+		.attr("fill", "rgb(150,150,150)")
 		.attr("font-family", "arial")
 		.attr("font-size", "25px")
 		.text("Cyber Breaches in the United States of America");
@@ -143,17 +167,6 @@ async function loadMap() {
 		.style("fill", "rgb(150,150,150)")
 		.attr("alignment-baseline","middle")
 
-	/*
-        var minibox = svg.append("svg")
-            .attr("id", "minibox")
-            .attr("x", "1035")
-            .attr("y", "275")
-            .append("g");
-
-
-        minibox.append("rect")
-            .attr("class", "lg");
-    */
 }
 
 function hexColor(index) {
@@ -200,27 +213,29 @@ function mousehover(index) {
 
 	svg.append("text")
 		.attr("id", "stateStat")
-		.attr("x", totalWidth - 390)
-		.attr("y", 115)
-		.attr("fill", "white")
+		.attr("x", totalWidth - 510)
+		.attr("y", 225)
+		.attr("fill", "rgb(150,150,150)")
 		.attr("font-family", "arial")
-		.attr("font-size", "50px")
+		.attr("font-size", "70px")
 		.text(states[index][0]);
 
 		svg.append("text")
 		.attr("id", "attackStat")
-		.attr("x", totalWidth - 550)
+		.attr("x", totalWidth - 290)
 		.attr("y", 215)
-		.attr("fill", "white")
+		.attr("fill", "rgb(150,150,150)")
 		.attr("font-family", "arial")
-		.attr("font-size", "20px")
-		.text("Total Number of People Affected: " + ppl_affected[index]);
+		.attr("font-size", "30px")
+		.text(ppl_affected[index]);
 
 
 		var minibox = svg.append("svg")
 			.attr("id", "minibox")
-			.attr("x", "1020")
-			.attr("y", "275")
+			.attr("x", "1025")
+			.attr("y", "350")
+			.attr("width", 1600)
+			.attr("height", 600)
 			.append("g")
 
 
@@ -228,7 +243,7 @@ function mousehover(index) {
 
 			minibox.append("rect")
 				.attr("class", "lg")
-				.style('fill', 'white');
+				.style('fill', "rgb(32,32,32)");
 
 }
 
@@ -236,7 +251,6 @@ function clearInfo() {
 	document.getElementById("stateStat").remove();
 	document.getElementById("attackStat").remove();
 	document.getElementById("minibox").remove();
-	//document.getElementById("barGraphh").remove();
 
 }
 
@@ -247,7 +261,7 @@ function makeInnerArea(chart) {
 		.attr("y", margins.top)
 		.attr("width", innerWidth)
 		.attr("height", innerHeight)
-		.attr("fill", "black");
+		.attr("fill", "rgb(19,32,38)");
 }
 
 function translate(x, y) {
@@ -318,7 +332,7 @@ function makeBarGraph(index) {
 				(height + margin.top - 5) + ")")
 			.style("text-anchor", "middle")
 			.style("font", "12px Arial")
-			.attr("fill", "black")
+			.attr("fill", "rgb(150,150,150)")
 			.text("Year");
 
 		//axis sources: https://bl.ocks.org/d3noob/23e42c8f67210ac6c678db2cd07a747e
@@ -333,7 +347,7 @@ function makeBarGraph(index) {
 			.attr("dy", "1em")
 			.style("text-anchor", "middle")
 			.style("font", "12px Arial")
-			.attr("fill", "black")
+			.attr("fill", "rgb(150,150,150)")
 			.text("# of Individuals Affected");
 
 
