@@ -5,31 +5,7 @@ rect.bg {
 }
 
 rect.lg {
-	width: 27%;
+	width: 25%;
 	height: 50%;
 	fill: black;
-}
-
-.axisColourX line{
-	stroke: red;
-}
-
-.axisColourX path{
-	stroke: red;
-}
-
-.axisColourX text{
-	fill: red;
-}
-
-.axisColourY line{
-	stroke: red;
-}
-
-.axisColourY path{
-	stroke: red;
-}
-
-.axisColourY text{
-	fill: red;
 }

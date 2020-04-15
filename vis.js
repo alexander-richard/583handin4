@@ -84,7 +84,7 @@ async function loadMap() {
 	svg.append("text")
 		.attr("x", totalWidth - 390)
 		.attr("y", 45)
-		.attr("fill", "black")
+		.attr("fill", "white")
 		.attr("font-family", "arial")
 		.attr("font-size", "30px")
 		.text("State");
@@ -143,17 +143,6 @@ async function loadMap() {
 		.style("fill", "rgb(150,150,150)")
 		.attr("alignment-baseline","middle")
 
-	/*
-        var minibox = svg.append("svg")
-            .attr("id", "minibox")
-            .attr("x", "1035")
-            .attr("y", "275")
-            .append("g");
-
-
-        minibox.append("rect")
-            .attr("class", "lg");
-    */
 }
 
 function hexColor(index) {
@@ -169,7 +158,7 @@ function hexColor(index) {
 }
 
 function storeAffected() {
-	d3.csv("newcyberSecurityBreaches.csv").then(function(data) {
+	d3.csv("cyberSecurityBreaches.csv").then(function(data) {
 		data.forEach(function(d) {
 			d["Individuals_Affected"] = +d["Individuals_Affected"];
 		});
@@ -190,6 +179,7 @@ function storeAffected() {
 
 	});
 }
+
 
 function mousehover(index) {
 	var svg = d3.select("#state").append("svg")
@@ -219,7 +209,7 @@ function mousehover(index) {
 
 		var minibox = svg.append("svg")
 			.attr("id", "minibox")
-			.attr("x", "1020")
+			.attr("x", "1035")
 			.attr("y", "275")
 			.append("g")
 
@@ -232,13 +222,7 @@ function mousehover(index) {
 
 }
 
-function clearInfo() {
-	document.getElementById("stateStat").remove();
-	document.getElementById("attackStat").remove();
-	document.getElementById("minibox").remove();
-	//document.getElementById("barGraphh").remove();
 
-}
 
 function makeInnerArea(chart) {
 	chart.append("rect")
@@ -256,8 +240,12 @@ function translate(x, y) {
 
 
 function makeBarGraph(index) {
-	//sources used for function: https://bl.ocks.org/d3noob/8952219, https://www.tutorialsteacher.com/d3js/create-bar-chart-using-d3js
-	var margin = {top: 40, right: 20, bottom: 30, left: 60},
+	console.log("STATE:" + states[index][0]);
+
+
+
+
+	var margin = {top: 40, right: 20, bottom: 30, left: 40},
 		width = 460 - margin.left - margin.right,
 		height = 300 - margin.top - margin.bottom;
 
@@ -268,19 +256,28 @@ function makeBarGraph(index) {
 	var y = d3.scaleLinear()
 		.range([height, 0]);
 
+	var ht = height + margin.top + margin.bottom
+	var wt = width + margin.left + margin.right
 
-	var svg = d3.select("#minibox").append("svg")
+	console.log("width" + ht);  //300
+	console.log("height" + wt); //460
+
+
+	var svg = d3.select("minibox").append("svg")
 		.attr("id", "barGraphh")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 
 
+		//.attr("width", width + margin.left + margin.right)
+		//.attr("height", height + margin.top + margin.bottom)
 		.append("g")
 		.attr("transform",
 			"translate(" + margin.left + "," + margin.top + ")");
 
 
-	data = d3.csv("newcyberSecurityBreaches.csv", function(d, i, names) {
+
+	data = d3.csv("cyberSecurityBreaches.csv", function(d, i, names) {
 		return {
 
 			state: d['State'],
@@ -291,6 +288,7 @@ function makeBarGraph(index) {
 	};
 	}).then(function (data){
 
+		// Scale the range of the data in the domains
 		x.domain(data.map(function(d) { return d.year; }));
 		y.domain([0, d3.max(data, function(d) { return d.numAffected; })]);
 
@@ -300,24 +298,38 @@ function makeBarGraph(index) {
 				return d.state === states[index][0]}))
 			.enter().append("rect")
 			.attr("class", "bar")
-			.style('fill', 'rgb(255, 145, 0)')
 			.attr("x", function(d) { return x(d.year); })
 			.attr("width", x.bandwidth())
 			.attr("y", function(d) { return y(d.numAffected); })
 			.attr("height", function(d) { return height - y(d.numAffected); });
 
 
+
+		// add the x Axis
 		svg.append("g")
 			.attr("transform", "translate(0," + height + ")")
-			.attr("class", "axisColourX")
 			.call(d3.axisBottom(x));
 
+		let maxSum = Math.max(...data.map(d => (parseFloat(d.numAffected))));
+
+		let yscale = d3.scaleLinear([0,maxSum], [480, 0])
+			.nice();
+
+		// add the y Axis
 		svg.append("g")
-			.attr("class", "axisColourY")
-			.call(d3.axisLeft(y));
+			.call(d3.axisLeft(yscale));
+
+		//$("svg").css({top: 1000, left: 200, position:'absolute'});
+
 
 	});
+}
+
+function clearInfo() {
+	document.getElementById("stateStat").remove();
+	document.getElementById("attackStat").remove();
+	document.getElementById("minibox").remove();
+	document.getElementById("barGraphh").remove();
 
 
 }
-
